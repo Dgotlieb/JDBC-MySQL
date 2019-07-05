@@ -4,7 +4,7 @@ public class DB {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection(
-                "jdbc:mysql://remotemysql.com:3306", "szswnaapzk", "6mgTl1Slou");
+                "jdbc:mysql://remotemysql.com:3306", "<user>", "<password>");
         Statement stmt = con.createStatement();
 //        createTable(stmt);
 //        insertStudent(con, 123, "daniel");
