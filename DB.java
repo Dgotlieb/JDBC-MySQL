@@ -1,31 +1,34 @@
 import java.sql.*;
 
 public class DB {
-    private static final String USER_NAME = szswnaapzk;
+    private static final String USER_NAME = "szswnaapzk";
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection(
                 "jdbc:mysql://remotemysql.com:3306", USER_NAME, "6mgTl1Slou");
-        Statement stmt = con.createStatement();
-//        createTable(stmt);
+        
+//        createTable(con);
 //        insertStudent(con, 123, "daniel");
-//        getTableContent(stmt);
+//        getTableContent(con);
+//        deleteStudentByName(con, "daniel");
+//        updateStudentGrade(con,123, "John");
     }
 
-    private static void createTable(Statement stmt) throws SQLException {
-        String statementToExecute2 = "CREATE TABLE '"+USER_NAME+"'.`users`(`id` INT NOT NULL,`name` VARCHAR(45) NOT NULL, PRIMARY KEY (`id`));";
-        stmt.execute(statementToExecute2);
+    private static void createTable(Connection con) throws SQLException {
+        Statement stmt = con.createStatement();
+        String statementToExecute = "CREATE TABLE '"+USER_NAME+"'.`users`(`id` INT NOT NULL,`name` VARCHAR(45) NOT NULL, PRIMARY KEY (`id`));";
+        stmt.execute(statementToExecute);
     }
 
     private static void insertStudent(Connection con, int id, String name) throws SQLException {
         String statementToExecute = "";
         Statement stmt = con.createStatement();
-        statementToExecute = "INSERT INTO '"+USER_NAME+"'.`users` (`id`, `name`) VALUES ('" + id + "', '" + name + "');";
+        statementToExecute = "INSERT INTO "+USER_NAME+".users (`id`, `name`) VALUES ('" + id + "', '" + name + "');";
         stmt.execute(statementToExecute);
     }
 
-    private static void getTableContent(Statement stmt) throws SQLException {
+    private static void getTableContent(Connection con) throws SQLException {
         String statementToExecute = "SELECT * FROM "+USER_NAME+".users;";
+        Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(statementToExecute);
         while(rs.next()){
             //Retrieve by column name
@@ -36,6 +39,20 @@ public class DB {
             System.out.print("ID: " + id);
             System.out.print(", Name: " + name);
         }
+    }
+    private static void deleteStudentByName(Connection con, String name) throws SQLException {
+        //Execute a query
+        String statementToExecute = "";
+        Statement stmt = con.createStatement();
+        statementToExecute = "DELETE FROM `"+USER_NAME+"`.`users` WHERE `name`='"+name+"';";
+        stmt.execute(statementToExecute);
+    }
 
+    private static void updateStudentGrade(Connection con, int id, String name) throws SQLException {
+        //Execute a query
+        String statementToExecute = "";
+        Statement stmt = con.createStatement();
+        statementToExecute = "UPDATE `"+USER_NAME+"`.`users` SET `name`='"+name+"' WHERE `id`='"+id+"';";
+        stmt.executeUpdate(statementToExecute);
     }
 }
